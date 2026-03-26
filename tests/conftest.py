@@ -16,10 +16,8 @@ def get_token(api_client):
         'username' : 'admin',
         'password' : 'password123'
     }
-    response = requests.post('https://restful-booker.herokuapp.com/auth',
-                             json=payload,
-                             headers=headers)
-    api_client.post('auth', json=payload, headers=headers)
+    response = api_client.post('auth', json=payload, headers=headers)
+
     return response.json()['token']
 
 

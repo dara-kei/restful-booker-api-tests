@@ -45,11 +45,11 @@ def test_create_booking_with_invalid_data(api_client):
     },
     "additionalneeds" : "Breakfast"
 }
-    response = api_client.post(ENDPOINT, json = data, headers = headers)
+    response = api_client.post(ENDPOINT, json = data)
     assert response.status_code == 500
 
 
 def test_create_booking_without_data(api_client):
     data = {}
-    response = api_client.post(ENDPOINT, json = data, headers = headers)
+    response = api_client.post(ENDPOINT, json = data)
     assert response.status_code == 500

@@ -16,7 +16,7 @@ def test_getting_auth_api_with_valid_data(api_client):
     try:
         validate(response.json(), aut_token_schema)
     except ValidationError as e:
-        print("Alarm")
+        print("Not match the schema")
         raise e
 
 

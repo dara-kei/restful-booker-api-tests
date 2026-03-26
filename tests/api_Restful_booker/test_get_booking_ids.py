@@ -59,6 +59,7 @@ def test_get_bookings_id_filter_by_firstname_and_lastname(api_client, create_boo
         assert actual_response2['lastname'] == 'Brown'
 
 
+# should be error (for example 404), because we put not existing name!
 def test_get_bookings_id_filter_by_not_existing_first_name(api_client, create_booking):
 
     response = api_client.get(ENDPOINT, params = {'firstname': 'Test'})
@@ -67,14 +68,14 @@ def test_get_bookings_id_filter_by_not_existing_first_name(api_client, create_bo
     assert len(actual_response) == 0
 
 
-# в реале должен быть код ошибки, например, 400, так как дата невалидна
+# should be error (for example 400), because we put invalid date!
 @pytest.mark.parametrize('date', ['99', '2012', '07.07.2022'])
 def test_get_bookings_id_filter_by_invalid_date(api_client, create_booking,date):
     response = api_client.get(ENDPOINT, params = {'checkin': date})
     assert response.status_code == 200
 
 
-# в реале должен быть код ошибки, например, 400, так как параметры невалидны
+# should be error (for example 400), because we put invalid params!
 def test_get_bookings_id_filter_by_invalid_params(api_client, create_booking):
     response = api_client.get(ENDPOINT, params={'invalid_params' : 'params'})
     assert response.status_code == 200
