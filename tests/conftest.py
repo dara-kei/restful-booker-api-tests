@@ -1,5 +1,4 @@
 import pytest
-import requests
 from utils.api_client import ApiClient
 
 
