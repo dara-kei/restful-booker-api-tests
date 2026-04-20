@@ -7,7 +7,7 @@ ENDPOINT = 'booking'
 
 
 def test_create_booking(api_client):
-    data = {
+    payload = {
     "firstname" : "Jim",
     "lastname" : "Brown",
     "totalprice" : 111,
@@ -21,7 +21,7 @@ def test_create_booking(api_client):
     # headers можно не писать, так как json=data автоматически добавляет нужные headers
     headers = {'Content-Type': 'application/json',
                'Accept': 'application/json'}
-    response = api_client.post(ENDPOINT, json = data, headers = headers)
+    response = api_client.post(ENDPOINT, json = payload, headers = headers)
     assert response.status_code == 200
     actual_result = response.json()
     validate(actual_result, create_booking_schema)
@@ -35,7 +35,7 @@ def test_create_booking(api_client):
 
 
 def test_create_booking_with_invalid_data(api_client):
-    data = {
+    payload = {
     "lastname" : "Brown",
     "totalprice" : 111,
     "depositpaid" : True,
@@ -45,11 +45,11 @@ def test_create_booking_with_invalid_data(api_client):
     },
     "additionalneeds" : "Breakfast"
 }
-    response = api_client.post(ENDPOINT, json = data)
+    response = api_client.post(ENDPOINT, json = payload)
     assert response.status_code == 500
 
 
 def test_create_booking_without_data(api_client):
-    data = {}
-    response = api_client.post(ENDPOINT, json = data)
+    payload = {}
+    response = api_client.post(ENDPOINT, json = payload)
     assert response.status_code == 500

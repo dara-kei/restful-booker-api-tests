@@ -6,12 +6,12 @@ ENDPOINT = 'booking'
 
 
 def test_partial_update_booking(api_client, create_booking, get_token):
-    data = {
+    payload = {
     "firstname" : "James",
     "lastname" : "Brown"
 }
     headers = {'Cookie' : f'token={get_token}'}
-    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=data, headers=headers)
+    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload, headers=headers)
     assert response.status_code == 200
     actual_response = response.json()
     validate(actual_response, get_one_booking_schema)
@@ -20,14 +20,14 @@ def test_partial_update_booking(api_client, create_booking, get_token):
 
 
 def test_partial_update_booking_without_data(api_client, create_booking, get_token):
-    data = {}
+    payload = {}
     headers = {'Cookie' : f'token={get_token}'}
-    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=data, headers=headers)
+    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload, headers=headers)
     assert response.status_code == 200
 
 
 def test_partial_update_booking_without_token(api_client, create_booking):
-    data = {
+    payload = {
     "firstname" : "James",
     "totalprice" : 111,
     "depositpaid" : True,
@@ -37,5 +37,5 @@ def test_partial_update_booking_without_token(api_client, create_booking):
     },
     "additionalneeds" : "Breakfast"
 }
-    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=data)
+    response = api_client.patch(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload)
     assert response.status_code == 403

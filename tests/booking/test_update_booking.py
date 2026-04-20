@@ -6,7 +6,7 @@ ENDPOINT = 'booking'
 
 
 def test_update_booking(api_client, create_booking, get_token):
-    data = {
+    payload = {
     "firstname" : "James",
     "lastname" : "Brown",
     "totalprice" : 111,
@@ -18,7 +18,7 @@ def test_update_booking(api_client, create_booking, get_token):
     "additionalneeds" : "Breakfast"
 }
     headers = {'Cookie' : f'token={get_token}'}
-    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=data, headers=headers)
+    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload, headers=headers)
     assert response.status_code == 200
     actual_response = response.json()
     validate(actual_response, get_one_booking_schema)
@@ -26,7 +26,7 @@ def test_update_booking(api_client, create_booking, get_token):
 
 
 def test_update_booking_with_invalid_data(api_client, create_booking, get_token):
-    data = {
+    payload = {
     "firstname" : "James",
     "totalprice" : 111,
     "depositpaid" : True,
@@ -37,12 +37,12 @@ def test_update_booking_with_invalid_data(api_client, create_booking, get_token)
     "additionalneeds" : "Breakfast"
 }
     headers = {'Cookie' : f'token={get_token}'}
-    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=data, headers=headers)
+    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload, headers=headers)
     assert response.status_code == 400
 
 
 def test_update_booking_without_token(api_client, create_booking):
-    data = {
+    payload = {
     "firstname" : "James",
     "totalprice" : 111,
     "depositpaid" : True,
@@ -52,5 +52,5 @@ def test_update_booking_without_token(api_client, create_booking):
     },
     "additionalneeds" : "Breakfast"
 }
-    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=data)
+    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload)
     assert response.status_code == 403
