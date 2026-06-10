@@ -1,4 +1,4 @@
-aut_token_schema = {
+auth_token_schema = {
     'type': 'object',
     'properties': {
         'token' : {
