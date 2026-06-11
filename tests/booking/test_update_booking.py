@@ -59,6 +59,23 @@ def test_update_booking_without_token(api_client, create_booking):
     assert response.status_code == 403
 
 
+def test_update_booking_with_invalid_token(api_client, create_booking):
+    payload = {
+    "firstname" : "James",
+    "totalprice" : 111,
+    "depositpaid" : True,
+    "bookingdates" : {
+        "checkin" : "2018-01-01",
+        "checkout" : "2019-01-01"
+    },
+    "additionalneeds" : "Breakfast"
+}
+    headers = {'Cookie': f'token=123'}
+    response = api_client.put(f'{ENDPOINT}/{create_booking['bookingid']}', json=payload, headers=headers)
+    assert response.status_code == 403
+
+
+
 def test_update_not_existing_booking(api_client, token):
     payload = {
         "firstname": "James",
@@ -77,7 +94,7 @@ def test_update_not_existing_booking(api_client, token):
 
 
 @pytest.mark.xfail(
-    reason="API-XX: PUT /booking incorrectly processes invalid booking ids"
+    reason="Known bug: PUT /booking incorrectly processes invalid booking ids"
 )
 @pytest.mark.parametrize("booking_id", ["1abc", "1.1", "01"])
 def test_update_booking_with_invalid_id(api_client, token, booking_id):
@@ -135,4 +152,3 @@ def test_update_booking_invalid_date(api_client,create_booking, token):
     headers = {'Cookie': f'token={token}'}
     response = api_client.put(f'{ENDPOINT}/{create_booking["bookingid"]}', json=payload, headers=headers)
     assert response.status_code == 400
-    
