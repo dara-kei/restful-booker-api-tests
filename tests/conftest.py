@@ -8,7 +8,7 @@ def api_client():
 
 
 @pytest.fixture(scope="session")
-def get_token(api_client):
+def token(api_client):
     headers = {'Content-Type': 'application/json',
                'Accept': 'application/json'}
     payload = {
@@ -22,7 +22,7 @@ def get_token(api_client):
 
 
 @pytest.fixture(scope="function")
-def create_booking(api_client, get_token):
+def create_booking(api_client, token):
     headers = {'Content-Type': 'application/json'}
     data = {
         "firstname": "Jim",
@@ -35,11 +35,12 @@ def create_booking(api_client, get_token):
         },
         "additionalneeds": "Breakfast"
     }
-    booking = api_client.post('booking', json=data, headers=headers)
-    assert booking.status_code == 200
-    booking_json = booking.json()
-    booking_id = booking_json['bookingid']
-    yield {'bookingid': booking_id,
-           'data' : booking_json}
+    response = api_client.post('booking', json=data, headers=headers)
+    assert response.status_code == 200
+    response_json = response.json()
+    response_id = response_json['bookingid']
+    yield {'bookingid': response_id,
+           'data' : response_json}
 
-    api_client.delete(f'booking/{booking_id}', headers={'Cookie' : f'token ={get_token}'})
+    api_client.delete(f'booking/{response_id}', headers={'Cookie' : f'token={token}'})
+    assert response.status_code == 200

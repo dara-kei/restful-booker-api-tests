@@ -90,7 +90,7 @@ def test_partial_update_booking_invalid_date(api_client,create_booking, token):
 
 @pytest.mark.xfail(
     reason="Known bug: PATCH /booking incorrectly processes invalid booking ids"
-) 
+)
 @pytest.mark.parametrize(
     "booking_id",
     ["1abc", "1.1", "01", "0001"]
