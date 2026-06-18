@@ -44,10 +44,10 @@ def test_delete_booking_with_invalid_id(api_client, create_booking, token, suffi
         f"{ENDPOINT}/{invalid_id}",
         headers=headers
     )
+    assert response.status_code == 400
 
     response2 = api_client.get(
         f"{ENDPOINT}/{create_booking['bookingid']}"
     )
 
-    print(response.status_code)
-    print(response2.status_code)
+    assert response2.status_code == 200

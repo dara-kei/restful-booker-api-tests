@@ -50,7 +50,7 @@ def test_get_bookings_id_filter_by_firstname_and_lastname(api_client, create_boo
     validate(actual_response, get_bookings_ids_schema)
     ids = [b['bookingid'] for b in actual_response]
     for booking_id in ids[:3]:
-        response2 = api_client.get(f'{ENDPOINT}/{id}')
+        response2 = api_client.get(f'{ENDPOINT}/{booking_id}')
         assert response2.status_code == 200
         actual_response2 = response2.json()
         assert actual_response2['firstname'] == 'Jim'
@@ -59,7 +59,7 @@ def test_get_bookings_id_filter_by_firstname_and_lastname(api_client, create_boo
 
 def test_get_bookings_id_filter_by_not_existing_first_name(api_client, create_booking):
 
-    response = api_client.get(ENDPOINT, params = {'firstname': 'Test'})
+    response = api_client.get(ENDPOINT, params = {'firstname': 'QAWERTY_NON_EXISTING_NAME_123456'})
     assert response.status_code == 200
     actual_response = response.json()
     assert len(actual_response) == 0
@@ -78,8 +78,8 @@ def test_get_bookings_id_filter_by_invalid_date(api_client, create_booking,date)
 )
 def test_get_bookings_id_filter_by_invalid_params(api_client, create_booking):
     response = api_client.get(ENDPOINT, params={'invalid_params' : 'params'})
-    assert response.status_code == 200
-    print(response.json())
+    assert response.status_code == 400
+
 
 
 
