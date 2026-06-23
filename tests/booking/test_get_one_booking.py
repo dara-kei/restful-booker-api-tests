@@ -21,17 +21,11 @@ def test_get_booking_with_not_existing_id(api_client, not_existing_id):
     assert response.status_code == 404
 
 
-@pytest.mark.xfail(
-    reason="API-25: GET /booking incorrectly processes invalid booking id values"
-)
 @pytest.mark.parametrize("invalid_id", ["1.1", "01", "0001", "1abc"])
 def test_get_booking_with_invalid_id(api_client, invalid_id):
     response = api_client.get(f'{ENDPOINT}/{invalid_id}')
-    assert response.status_code == 404, (
-        f"id={invalid_id}\n"
-        f"status={response.status_code}\n"
-        f"body={response.text}"
-    )
+    assert response.status_code == 404
+
 
 
 @pytest.mark.parametrize(
